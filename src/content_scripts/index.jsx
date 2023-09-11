@@ -84,7 +84,9 @@ const showPopupCard = async (text, x, y) => {
   root = createRoot(popupCard);
   root.render(
     <React.StrictMode>
-      <h1>{text}</h1>
+      <h1 className="text-red-800" style={{ color: "red" }}>
+        {text}
+      </h1>
     </React.StrictMode>
   );
 };
