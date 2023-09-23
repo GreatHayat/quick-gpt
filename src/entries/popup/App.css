@@ -1,0 +1,8 @@
+main {
+  width: 600px;
+  height: 400px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

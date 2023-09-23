@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&family=Roboto:wght@300;400;700&display=swap");
+
+.quick-gpt-container {
+  width: 700px;
+  margin: auto;
+  background: #fff;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  border-radius: 5px;
+  position: fixed;
+  visibility: visible;
+  font-family: "Roboto", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.quick-gpt-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px 10px;
+  cursor: move;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.quick-gpt-header-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.quick-gpt-content-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-gpt-input-area {
+  width: 100%;
+  padding: 10px;
+}
+
+.quick-gpt-input-area .quick-gpt-text-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: #f3f4f6;
+  border-radius: 3px;
+  padding: 10px;
+  color: #030712;
+  margin-bottom: 5px;
+}
+
+.quick-gpt-divider {
+  width: 100%;
+  height: 1px;
+  background: #e5e7eb;
+}
+.quick-gpt-output-area {
+  width: 100%;
+  min-height: 100px;
+  max-height: 250px;
+  padding: 15px;
+  font-size: 14px;
+  color: #374151;
+  overflow: auto;
+}
+
+.quick-gpt-output-area .quick-gpt-output-area-title {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.quick-gpt-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.quick-gpt-footer .quick-gpt-footer-button {
+  background: none;
+  border: 0px;
+  cursor: pointer;
+}
+
+.quick-gpt-api-error {
+  color: #dc2626;
+}
+
+.quick-gpt-copied-text-message {
+  color: #047857;
+  font-style: bold;
+  letter-spacing: 0.2px;
+}
+
+.quick-gpt-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.quick-gpt-icon-button {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+
+.quick-gpt-cross-button {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  background: #333;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.quick-gpt-actions-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quick-gpt-repeat-button {
+  padding: 1px 2px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.quick-gpt-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quick-gpt-action-button {
+  padding: 3px;
+  cursor: pointer;
+}

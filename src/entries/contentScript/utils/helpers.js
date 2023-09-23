@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import {
   CONTAINER_ID,
   POPUP_THUMB_ID,
@@ -29,6 +30,7 @@ export async function getContainer() {
           return;
         }
         const shadowRoot = container.attachShadow({ mode: "open" });
+
         const inner = document.createElement("div");
         shadowRoot.appendChild(inner);
         const html = document.body.parentElement;
@@ -54,4 +56,34 @@ export const queryPopupThumbElement = async () => {
 export const queryPopupCardElement = async () => {
   const container = await getContainer();
   return container.shadowRoot?.querySelector(`#${POPUP_CARD_ID}`) || null;
+};
+
+export const getBrowser = async () => {
+  return (await import("webextension-polyfill")).default;
+};
+
+export const setSettings = async (settings) => {
+  const browser = await getBrowser();
+  const { quickGpt } = await browser.storage?.sync?.get("quickGpt");
+  if (quickGpt) {
+    const data = JSON.parse(quickGpt);
+    const updated = {
+      ...data,
+      ...settings,
+    };
+    await browser.storage.sync.set({
+      quickGpt: JSON.stringify(updated),
+    });
+    return;
+  }
+
+  await browser.storage.sync.set({
+    quickGpt: JSON.stringify(settings),
+  });
+};
+
+export const getSettings = async () => {
+  const browser = await getBrowser();
+  const { quickGpt } = await browser.storage?.sync?.get("quickGpt");
+  return JSON.parse(quickGpt);
 };

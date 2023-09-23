@@ -1,0 +1,44 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.quick-gpt-list-group {
+  padding: 8px;
+}
+
+.quick-gpt-list-group-item {
+  list-style: none;
+  margin-bottom: 2px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.quick-gpt-list-group-item:hover {
+  border-radius: 3px;
+  background: #f3f4f6;
+}
+
+/* For Webkit browsers */
+::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+  display: none;
+}
+
+/* Track (the area on which the scrollbar is displayed) */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track background color */
+}
+
+/* Handle (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Handle color */
+  border-radius: 3px; /* Border radius to make it round */
+}
+
+/* When hovering over the scrollbar */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Handle color on hover */
+}

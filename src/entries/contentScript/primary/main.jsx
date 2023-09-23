@@ -1,13 +1,26 @@
+import "../../enableDevHmr";
 import React from "react";
-import { createRoot, Root } from "react-dom/client";
-import { POPUP_CARD_ID, POPUP_THUMB_ID, Z_INDEX } from "./constants";
+import ReactDOM from "react-dom/client";
+import browser from "webextension-polyfill";
+import renderContent from "../renderContent";
+import App from "./App";
 import {
   getContainer,
+  getSettings,
   queryPopupCardElement,
   queryPopupThumbElement,
-} from "./utils";
+} from "../utils/helpers";
+import { Z_INDEX, POPUP_CARD_ID, POPUP_THUMB_ID } from "../utils/constants";
 
-let root = Root || null;
+// renderContent(import.meta.PLUGIN_WEB_EXT_CHUNK_CSS_PATHS, (appRoot) => {
+//   ReactDOM.createRoot(appRoot).render(
+//     <React.StrictMode>
+//       <App />
+//     </React.StrictMode>
+//   );
+// });
+
+let root = null;
 
 const popupThumbClickHandler = async (e) => {
   e.stopPropagation();
@@ -22,7 +35,7 @@ const popupThumbClickHandler = async (e) => {
   const x = popup.style.left;
   const y = popup.style.top;
 
-  showPopupCard(text, x, y);
+  showPopupCard(popup, text, x, y);
 };
 
 const removeContainer = async () => {
@@ -52,41 +65,58 @@ const hidePopupCard = async () => {
   removeContainer();
 };
 
-const createPopupCard = async () => {
+const createPopupCard = async (x = 0, y = 0) => {
   const card = document.createElement("div");
   card.id = POPUP_CARD_ID;
   card.style.position = "absolute";
   card.style.zIndex = Z_INDEX;
+  card.style.overflow = "auto";
   card.style.background = "#FFFFFF";
-  card.style.width = "200px";
-  card.style.height = "200px";
-  card.style.border = "1px solid red";
+  card.style.boxShadow = "rgba(0, 0, 0, 0.24) 0px 3px 8px";
+  card.style.width = "300px";
+  card.style.height = "250px";
+  card.style.borderRadius = "5px";
   card.style.top = 0;
+  card.style.boxSizing = "border-box";
+  card.style.left = x;
+  card.style.top = y;
 
   const container = await getContainer();
   container?.shadowRoot?.querySelector("div").appendChild(card);
 
+  if (container?.shadowRoot) {
+    const shadowRoot = container.shadowRoot;
+
+    if (import.meta.hot) {
+      const { addViteStyleTarget } = await import(
+        "@samrum/vite-plugin-web-extension/client"
+      );
+      await addViteStyleTarget(shadowRoot);
+    } else {
+      import.meta.PLUGIN_WEB_EXT_CHUNK_CSS_PATHS?.forEach((cssPath) => {
+        const styleEl = document.createElement("link");
+        styleEl.setAttribute("rel", "stylesheet");
+        styleEl.setAttribute("href", browser.runtime.getURL(cssPath));
+        shadowRoot.appendChild(styleEl);
+      });
+    }
+  }
   return card;
 };
 
-const showPopupCard = async (text, x, y) => {
+const showPopupCard = async (popup, text, x, y) => {
   hidePopupThumb();
 
   let popupCard = await queryPopupCardElement();
 
   if (!popupCard) {
-    popupCard = await createPopupCard();
+    popupCard = await createPopupCard(x, y);
   }
 
-  popupCard.style.left = x;
-  popupCard.style.top = y;
-
-  root = createRoot(popupCard);
+  root = ReactDOM.createRoot(popupCard);
   root.render(
     <React.StrictMode>
-      <h1 className="text-red-800" style={{ color: "red" }}>
-        {text}
-      </h1>
+      <App selectedText={text} reference={popup} />
     </React.StrictMode>
   );
 };
@@ -103,7 +133,6 @@ const showPopupThumb = async (text, x, y) => {
 
     // Apply Styling
     popup.style.width = "35px";
-    popup.style.height = "35px";
     popup.style.borderRadius = "50%";
     popup.style.boxShadow = "rgba(0, 0, 0, 0.16) 0px 1px 4px";
     popup.style.zIndex = Z_INDEX;
@@ -142,8 +171,13 @@ const showPopupThumb = async (text, x, y) => {
   popup.style.left = x;
 };
 
-const onMouseDownHandler = () => {
+const onMouseDownHandler = async () => {
   hidePopupThumb();
+  const { isPinned } = await getSettings();
+
+  if (isPinned) {
+    return;
+  }
 
   if (root) {
     hidePopupCard();
@@ -151,7 +185,10 @@ const onMouseDownHandler = () => {
 };
 
 async function main() {
-  document.addEventListener("mouseup", () => {
+  document.addEventListener("mouseup", (event) => {
+    if (root !== null) {
+      return;
+    }
     const selection = window.getSelection();
     const text = selection.toString().trim();
 
@@ -162,8 +199,8 @@ async function main() {
     //   window.pageXOffset || document.documentElement.scrollLeft;
     // const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    const x = `${rect.left}px`;
-    const y = `${rect.bottom + 10}px`;
+    const x = `${event.pageX + 7}px`;
+    const y = `${event.pageY + 7}px`;
 
     // const x = `${rect.left + scrollLeft}px`;
     // const y = `${window.innerHeight - rect.top - scrollTop}px`;
