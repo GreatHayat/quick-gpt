@@ -16,11 +16,7 @@ const manifest = {
   content_scripts: [
     {
       js: ["src/entries/contentScript/primary/main.jsx"],
-      matches: [
-        "https://floating-ui.com/docs/floatinglist",
-        "https://www.linkedin.com/feed/",
-        "https://stackoverflow.com/*",
-      ],
+      matches: ["<all_urls>"],
     },
   ],
   permissions: ["tabs", "activeTab", "storage", "webNavigation"],
