@@ -1,6 +1,7 @@
 # chrome-gpt
 
-This template should help get you started developing a react web extension in Vite.
+![Alt text](/Screenshot.png?raw=true "Optional Title")
+
 
 ## Usage Notes
 
