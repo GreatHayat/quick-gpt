@@ -11,8 +11,6 @@ import { AnimatedCircle, Copy, Pin, PinFill, Repeat } from "../svgIcons";
 import { Markdown } from "../Markdown";
 import "./style.css";
 
-const OPENAI_API_KEY = "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";
-
 export const chatCopmletion = async (action, text) => {
   const { apiKey, model, tone, writingStyle, language } = await getSettings();
   const content = getPrompt(action, text, tone, writingStyle, language);
