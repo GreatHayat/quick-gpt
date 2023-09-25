@@ -1,4 +1,4 @@
-# chrome-gpt
+# Quick GPT
 
 ![Alt text](/Screenshot.png?raw=true "Optional Title")
 
